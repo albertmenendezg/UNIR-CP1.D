@@ -8,5 +8,20 @@ pipeline {
             }
         }
 
+        stage('Static Test') {
+            steps {
+                script {
+                    sh 'mkdir -p reports'
+                    sh '''
+                        flake8 src --format=html --htmldir=reports/flake8 || true
+                    '''
+                    sh '''
+                        bandit -r src -f json -o reports/bandit.json || true
+                    '''
+                }
+
+                archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
+            }
+        }
     }
 }

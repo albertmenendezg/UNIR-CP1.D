@@ -30,5 +30,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh '''
+                        sam build
+                        sam validate
+                        sam deploy --config-env staging --no-confirm-changeset --no-fail-on-empty-changeset --no-interactive
+                    '''
+                }
+            }
+        }
     }
 }

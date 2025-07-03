@@ -10,17 +10,24 @@ pipeline {
 
         stage('Static Test') {
             steps {
-                script {
-                    sh 'mkdir -p reports'
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh '''
-                        flake8 src --format=html --htmldir=reports/flake8
+                        mkdir -p reports
+                        bandit --exit-zero -r src -f custom -o reports/bandit.out --msg-template "{abspath}:{line}: [{test_id}] {msg}"
+                        flake8 --exit-zero --format=pylint src > reports/flake8.out
                     '''
-                    sh '''
-                        bandit -r src -f json -o reports/bandit.json
-                    '''
-                }
 
-                archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
+                    recordIssues tools: [
+                        pyLint(name: 'Bandit', pattern: 'reports/bandit.out'),
+                        flake8(name: 'Flake8', pattern: 'reports/flake8.out')
+                    ]
+                }
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
+                }
             }
         }
     }

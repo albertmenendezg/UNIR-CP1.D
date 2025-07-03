@@ -13,10 +13,10 @@ pipeline {
                 script {
                     sh 'mkdir -p reports'
                     sh '''
-                        flake8 src --format=html --htmldir=reports/flake8 || true
+                        flake8 src --format=html --htmldir=reports/flake8
                     '''
                     sh '''
-                        bandit -r src -f json -o reports/bandit.json || true
+                        bandit -r src -f json -o reports/bandit.json
                     '''
                 }
 

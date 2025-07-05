@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        BASE_URL = 'https://biyt4fra52.execute-api.us-east-1.amazonaws.com/Prod'
+    }
+
     stages {
         stage('Get Code') {
             steps {
@@ -42,6 +46,7 @@ pipeline {
         }
 
         stage('Rest Test') {
+            env
             steps {
                 sh '''
                     pytest test/integration/todoApiTest.py

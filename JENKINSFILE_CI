@@ -57,6 +57,7 @@ pipeline {
                 sshagent(credentials: ['github-ssh-key']) {
                     sh '''
                         git checkout master
+                        git pull
                         git pull origin master
                         git merge develop
                         git push origin master

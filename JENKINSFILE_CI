@@ -56,11 +56,9 @@ pipeline {
             steps {
                 sshagent(credentials: ['github-ssh-key']) {
                     sh '''
-                        git checkout develop
-                        git pull origin develop
                         git checkout master
                         git pull origin master
-                        git merge --no-ff develop -m "Promote release from develop to master"
+                        git merge develop
                         git push origin master
                     '''
                 }

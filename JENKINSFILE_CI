@@ -36,7 +36,7 @@ pipeline {
                 sh '''
                     sam build
                     sam validate --region us-east-1
-                    sam deploy --config-env staging --region us-east-1 --no-confirm-changeset --no-fail-on-empty-changeset
+                    sam deploy --config-env staging --no-confirm-changeset --force-upload --no-fail-on-empty-changeset --no-progressbar
                 '''
             }
         }

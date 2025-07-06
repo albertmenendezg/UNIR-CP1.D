@@ -70,7 +70,6 @@ pipeline {
                     whoami
                     hostname
                     cat .env
-                    . .env
                     pytest test/integration/todoApiTest.py
                 '''
             }

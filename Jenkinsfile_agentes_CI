@@ -52,7 +52,8 @@ pipeline {
                     sam validate --region us-east-1
                     sam deploy --config-env staging --no-confirm-changeset --force-upload --no-fail-on-empty-changeset --no-progressbar
                     API_URL=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query "Stacks[0].Outputs[?OutputKey=='BaseUrlApi'].OutputValue" --output text)
-                    cat "BASE_URL=$API_URL" > .env
+                    echo "BASE_URL=$API_URL" > .env
+                    cat .env
                 '''
                 stash includes: '.env', name: 'env'
             }

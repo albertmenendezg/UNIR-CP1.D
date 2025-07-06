@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Get Code') {
+            steps {
+                git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'master'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    sam build
+                    sam validate --region us-east-1
+                    sam deploy --config-env production --no-confirm-changeset --force-upload --no-fail-on-empty-changeset --no-progressbar
+                '''
+            }
+        }
+    }
+}

@@ -68,7 +68,7 @@ pipeline {
                 sh '''
                     whoami
                     hostname
-                    source .env
+                    . .env
                     pytest test/integration/todoApiTest.py
                 '''
             }

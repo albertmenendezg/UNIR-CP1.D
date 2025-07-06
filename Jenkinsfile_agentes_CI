@@ -69,7 +69,8 @@ pipeline {
                 sh '''
                     whoami
                     hostname
-                    cat .env
+                    export $(cat .env)
+                    echo "BASE_URL=$BASE_URL"
                     pytest test/integration/todoApiTest.py
                 '''
             }

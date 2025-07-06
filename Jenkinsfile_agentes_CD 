@@ -1,0 +1,38 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Get Code') {
+            agent any
+            steps {
+                git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'master'
+            }
+        }
+
+        stage('Deploy') {
+            agent any
+            steps {
+                sh '''
+                    sam build
+                    sam validate --region us-east-1
+                    sam deploy --config-env production --no-confirm-changeset --force-upload --no-fail-on-empty-changeset --no-progressbar
+                '''
+            }
+        }
+
+        stage('Rest Test') {
+            agent {
+                label 'rest-tests'
+            }            
+            environment {
+                BASE_URL = 'https://6rwz7kh6j2.execute-api.us-east-1.amazonaws.com/Prod'
+            }
+
+            steps {
+                sh '''
+                    pytest test/integration/todoApiTest.py -m read_only_api -v
+                '''
+            }
+        }
+    }
+}

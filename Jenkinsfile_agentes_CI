@@ -83,9 +83,10 @@ pipeline {
                     sh '''
                         whoami
                         hostname
-                        git remote set-url origin git@github.com:albertmenendezg/UNIR-CP1.D.git
+                        git checkout develop
+                        git pull origin develop
                         git checkout master
-                        git pull
+                        git pull origin master
                         git merge develop
                         git push origin master
                     '''

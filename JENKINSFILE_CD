@@ -17,5 +17,18 @@ pipeline {
                 '''
             }
         }
+
+        stage('Rest Test') {
+            
+            environment {
+                BASE_URL = 'https://6rwz7kh6j2.execute-api.us-east-1.amazonaws.com/Prod'
+            }
+
+            steps {
+                sh '''
+                    pytest -m read_only
+                '''
+            }
+        }
     }
 }

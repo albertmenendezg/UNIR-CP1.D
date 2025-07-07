@@ -5,6 +5,7 @@ pipeline {
         stage('Get Code') {
             steps {
                 sh '''
+                    git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'master'
                     rm -rf config
                     git clone --branch staging https://github.com/albertmenendezg/UNIR-CP1.D-config.git config
                     cp config/samconfig.toml .

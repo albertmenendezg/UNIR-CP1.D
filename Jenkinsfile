@@ -6,8 +6,8 @@ pipeline {
             steps {
                 git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'master'
                 sh '''
-                    git clone --branch production https://github.com/albertmenendezg/UNIR-CP1.D-config.git config
                     rm -rf config
+                    git clone --branch production https://github.com/albertmenendezg/UNIR-CP1.D-config.git config
                     cp config/samconfig.toml .
                 '''
             }

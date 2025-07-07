@@ -4,35 +4,11 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
-                git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'develop'
                 sh '''
                     rm -rf config
                     git clone --branch staging https://github.com/albertmenendezg/UNIR-CP1.D-config.git config
                     cp config/samconfig.toml .
                 '''
-            }
-        }
-        
-        stage('Static Test') {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                    sh '''
-                        mkdir -p reports
-                        bandit --exit-zero -r src -f custom -o reports/bandit.out --msg-template "{abspath}:{line}: [{test_id}] {msg}"
-                        flake8 --exit-zero --format=pylint src > reports/flake8.out
-                    '''
-
-                    recordIssues tools: [
-                        pyLint(name: 'Bandit', pattern: 'reports/bandit.out'),
-                        flake8(name: 'Flake8', pattern: 'reports/flake8.out')
-                    ]
-                }
-            }
-
-            post {
-                always {
-                    archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
-                }
             }
         }
 

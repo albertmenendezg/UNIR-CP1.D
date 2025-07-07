@@ -9,11 +9,16 @@ pipeline {
                     whoami
                     hostname
                 '''
+<<<<<<< HEAD
                 git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'develop'
+=======
+                git url: 'https://github.com/albertmenendezg/UNIR-CP1.D', branch: 'master'
+>>>>>>> master
                 stash includes: '**', name: 'workspace'
             }
         }
 
+<<<<<<< HEAD
         stage('Static Test') {
             agent {
                 label 'static-tests'
@@ -40,6 +45,8 @@ pipeline {
                 }
             }
         }
+=======
+>>>>>>> master
 
         stage('Deploy') {
             agent any
@@ -51,9 +58,12 @@ pipeline {
                     sam build
                     sam validate --region us-east-1
                     sam deploy --config-env staging --no-confirm-changeset --force-upload --no-fail-on-empty-changeset --no-progressbar
+<<<<<<< HEAD
                     API_URL=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query "Stacks[0].Outputs[?OutputKey=='BaseUrlApi'].OutputValue" --output text)
                     echo "BASE_URL=$API_URL" > .env
                     cat .env
+=======
+>>>>>>> master
                 '''
                 stash includes: '.env', name: 'env'
             }
@@ -75,6 +85,7 @@ pipeline {
                 '''
             }
         }
+<<<<<<< HEAD
 
         stage('Promote') {
             agent any
@@ -94,5 +105,7 @@ pipeline {
                 }
             }
         }
+=======
+>>>>>>> master
     }
 }

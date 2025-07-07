@@ -11,7 +11,7 @@ pipeline {
                 '''
             }
         }
-
+        
         stage('Static Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
